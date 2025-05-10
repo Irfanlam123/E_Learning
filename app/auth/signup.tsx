@@ -98,8 +98,8 @@ const Signup = () => {
             style={styles.input}
           >
             <option value="">Select Role</option>
-            <option value="doctor">Doctor</option>
-            <option value="patient">Patient</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
             <option value="admin">Admin</option>
           </select>
         ) : (
@@ -109,8 +109,8 @@ const Signup = () => {
             style={styles.input}
           >
             <Picker.Item label="Select Role" value="" />
-            <Picker.Item label="Doctor" value="doctor" />
-            <Picker.Item label="Patient" value="patient" />
+            <Picker.Item label="Teacher" value="teacher" />
+            <Picker.Item label="Student" value="student" />
             <Picker.Item label="Admin" value="admin" />
           </Picker>
         )}

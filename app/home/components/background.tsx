@@ -1,42 +1,58 @@
 import { RootState } from "@/app/store";
 import { useAppSelector } from "@/app/store/hooks";
-import React from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Image, View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import { FontAwesome } from "@expo/vector-icons"; // Cart icon
 
-export const Background = () =>{
+export const Background = () => {
   const user = useAppSelector((state: RootState) => state.auth.user);
-console.log("user", user);
-  return(
-    <SafeAreaProvider>
-    <SafeAreaView style={styles.container} edges={["right", "left"]}>
-      <View style={styles.flexContainer}>
-        <View style={styles.content}>
-          <Image
-            source={require("../../../assets/images/onboarding2.png")}
-            resizeMode="cover"
-            style={styles.profilePic}
-          />
-          <Text style={styles.text}>Welcome {user?.name}!</Text>
-          <Text style={styles.subtext}>How is it going tommoror?</Text>
-        </View>
+  const [searchQuery, setSearchQuery] = useState("");
 
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("../../../assets/images/home.png")}
-            resizeMode="cover"
-            style={styles.image}
-          />
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container} edges={["right", "left"]}>
+
+        {/* Cart Icon - Top Right */}
+        <TouchableOpacity style={styles.cartIcon}>
+          <FontAwesome name="shopping-cart" size={24} color="#000" />
+        </TouchableOpacity>
+
+        <View style={styles.flexContainer}>
+          <View style={styles.content}>
+            <Image
+              source={require("../../../assets/images/prof.jpg")}
+              resizeMode="cover"
+              style={styles.profilePic}
+            />
+            <Text style={styles.text}>Welcome {user?.name}!</Text>
+            <Text style={styles.subtext}>How is it going with Your Career?</Text>
+
+            {/* Search Input Below Text */}
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search Courses..."
+              placeholderTextColor="#888"
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+            />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
-  </SafeAreaProvider> 
-  )
-}
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#ADD8E6",
+  },
+  cartIcon: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 10,
   },
   flexContainer: {
     flex: 1,
@@ -47,18 +63,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: "#ADD8E6",
   },
-  imageContainer: {
-    flex: 1,
-    width: "100%",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
   content: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 10,
   },
   profilePic: {
     width: 100,
@@ -72,13 +81,21 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     fontSize: 30,
-    fontWeight: "semibold",
+    fontWeight: "600",
     textAlign: "center",
   },
   subtext: {
     color: "gray",
     fontSize: 15,
-
     textAlign: "center",
+  },
+  searchInput: {
+    width: "100%",
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    paddingLeft: 15,
+    fontSize: 16,
+    marginTop: 20,
   },
 });

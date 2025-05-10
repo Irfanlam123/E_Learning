@@ -1,28 +1,34 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 
 const OnBoardingsScreen1 = () => {
   const router = useRouter();
+
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/onboard1.png")}
+        source={require("../../assets/images/onboard1.jpg")}
         style={styles.image}
       />
+
       <View style={styles.textContainer}>
-        <Text style={styles.text}>
-          Find a lot of specialist doctors in one place
-        </Text>
-        <AntDesign
-          name="rightcircle"
-          size={40}
-          color="blue"
-          onPress={() => {
-            router.push("/onboardingscreens/onboarding2");
-          }}
-        />
+        <Text style={styles.title}>Find the Best Courses</Text>
+        <Text style={styles.subtitle}>For Your Career Enhancement!</Text>
+
+        {/* Dots */}
+        <View style={styles.dotsContainer}>
+          <View style={styles.activeDot} />
+          <View style={styles.inactiveDot} />
+          <View style={styles.inactiveDot} />
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/onboardingscreens/onboarding2")}
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -33,25 +39,60 @@ export default OnBoardingsScreen1;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   image: {
     width: "100%",
-    height: "70%",
+    height: "65%",
     resizeMode: "cover",
-    paddingTop: 0,
-    margin: 0,
   },
   textContainer: {
-    flexDirection: "row", // Align text and icon horizontally
-    justifyContent: "space-between", // Space between the text and icon
-    alignItems: "center", // Align vertically
-    paddingHorizontal: 20, // Optional for padding around the container
-    marginTop: 20, // Optional to add space from the image
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
-  text: {
-    fontSize: 20,
-    color: "black",
+  title: {
+    fontSize: 24,
     fontWeight: "bold",
-    padding: 5,
+    color: "#1e1e1e",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    marginBottom: 25,
+  },
+  activeDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: "#007bff",
+    marginHorizontal: 6,
+  },
+  inactiveDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#ccc",
+    marginHorizontal: 6,
+  },
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 50,
+    elevation: 3,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
 });
