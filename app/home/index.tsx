@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
-import BookConsultationCard from "./components/Card";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   GestureHandlerRootView,
@@ -25,7 +24,6 @@ const HomeScreen = () => {
               <HorizontalOptions />
             </View>
             <View style={styles.section}>
-              <BookConsultationCard />
             </View>
 
             <View style={styles.section}>

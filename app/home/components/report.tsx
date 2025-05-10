@@ -16,9 +16,9 @@ type ReportItem = {
 };
 
 const reports: ReportItem[] = [
-  { id: "1", title: "Blood Test Report", date: "March 20, 2024", type: "PDF" },
-  { id: "2", title: "X-Ray Report", date: "March 18, 2024", type: "Image" },
-  { id: "3", title: "MRI Scan Report", date: "March 15, 2024", type: "PDF" },
+  { id: "1", title: "course Report", date: "March 20, 2024", type: "PDF" },
+  { id: "2", title: "course", date: "March 18, 2024", type: "Image" },
+  { id: "3", title: "course", date: "March 15, 2024", type: "PDF" },
 ];
 
 const Report = () => {

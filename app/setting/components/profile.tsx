@@ -34,13 +34,13 @@ const ProfilePage = () => {
     
     {
       id: "2",
-      title: "Book Consultation",
+      title: "Courses",
       icon: <FontAwesome name="calendar" size={24} color="#333" />,
       onPress: () => router.push("/doctor"),
     },
     {
       id: "3",
-      title: "Order Medicine",
+      title: "Teacher",
       icon: <MaterialIcons name="payment" size={24} color="#333" />,
       onPress: () => router.push("/ordermedicine"),
     },

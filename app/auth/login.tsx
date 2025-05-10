@@ -24,6 +24,7 @@ const Login = () => {
 
   // Handle Login Button
   const handleLogin = async () => {
+    router.push("/(tabs)")
     const { email, password } = value;
 
     if (!email || !password) {
@@ -41,13 +42,13 @@ const Login = () => {
 //       // You can navigate to different screens based on the response
 //       // For example, if the response is successful, navigate to the home screen
 //       // Redirect based on user role
-      if (response.role ==="patient"||response.role==="") {
-        router.navigate("/(tabs)");
-      } else if (response.role === "doctor") {
-        router.push("/doctorpannel");
-      } else if (response.role === "admin") {
-        router.push("/admin");
-      }
+      // if (response.role ==="patient"||response.role==="") {
+      //   router.navigate("/(tabs)");
+      // } else if (response.role === "doctor") {
+      //   router.push("/doctorpannel");
+      // } else if (response.role === "admin") {
+      //   router.push("/admin");
+      // }
     } catch (err: any) {
       Alert.alert("Login Failed", err);
     }
