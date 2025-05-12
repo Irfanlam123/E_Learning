@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 
 const SplashScreen = () => {
@@ -14,32 +14,46 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/images/splash.png")} />
-      <Text style={styles.text}>Welcome to My App!</Text>
+      <Image
+        source={require("../assets/images/splash.jpg")}
+        style={styles.backgroundImage}
+      />
+      <View style={styles.overlay}>
+        <Text style={styles.text}>Welcome to E-Learning App!</Text>
+      </View>
     </View>
   );
 };
 
+export default SplashScreen;
+
+const { width, height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
+    backgroundColor: "#000",
+  },
+  backgroundImage: {
+    width: width,
+    height: height,
+    resizeMode: "cover",
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  overlay: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
-    width: "100%",
-    height: "100%", // Ensure background color
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain", // "cover" if needed
+    backgroundColor: "rgba(0,0,0,0.4)", // Slight dark overlay for readability
   },
   text: {
-    fontSize: 24,
-    color: "white",
+    fontSize: 28,
     fontWeight: "bold",
-    marginTop: 20,
+    color: "#fff",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });
-
-export default SplashScreen;

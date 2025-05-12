@@ -43,7 +43,7 @@ const Report = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Health Reports</Text>
+      <Text style={styles.header}>Course Reports</Text>
       <FlatList
         data={reports}
         keyExtractor={(item) => item.id}

@@ -6,43 +6,83 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  MaterialIcons,
+  Ionicons,
+  Feather,
+  AntDesign,
+  Entypo,
+} from "@expo/vector-icons";
 import { router } from "expo-router";
 
-// Updated options for the e-learning platform
 const options = [
   {
     id: "1",
     title: "Art",
     icon: <FontAwesome5 name="paint-brush" size={28} color="#f39c12" />,
-    onPress: () => router.push("/art"), // Navigate to Art courses
+    onPress: () => router.push("/art"),
   },
   {
     id: "2",
     title: "Coding",
     icon: <MaterialIcons name="code" size={28} color="#3498db" />,
-    onPress: () => router.push("/coding"), // Navigate to Coding courses
+    onPress: () => router.push("/coding"),
   },
   {
     id: "3",
     title: "Marketing",
     icon: <Ionicons name="md-business" size={28} color="#e74c3c" />,
-    onPress: () => router.push("/marketing"), // Navigate to Marketing courses
+    onPress: () => router.push("/marketing"),
   },
   {
     id: "4",
     title: "Business",
     icon: <FontAwesome5 name="briefcase" size={28} color="#2ecc71" />,
-    onPress: () => router.push("/business"), // Navigate to Business courses
+    onPress: () => router.push("/business"),
+  },
+  {
+    id: "5",
+    title: "UI/UX",
+    icon: <Feather name="layout" size={28} color="#9b59b6" />,
+    onPress: () => router.push("/uiux"),
+  },
+  {
+    id: "6",
+    title: "Figma Design",
+    icon: <AntDesign name="antdesign" size={28} color="#e67e22" />,
+    onPress: () => router.push("/figma"),
+  },
+  {
+    id: "7",
+    title: "Video Editing",
+    icon: <MaterialIcons name="video-library" size={28} color="#1abc9c" />,
+    onPress: () => router.push("/video-editing"),
+  },
+  {
+    id: "8",
+    title: "Photography",
+    icon: <Entypo name="camera" size={28} color="#e84393" />,
+    onPress: () => router.push("/photography"),
+  },
+  {
+    id: "9",
+    title: "Data Science",
+    icon: <FontAwesome5 name="database" size={28} color="#2980b9" />,
+    onPress: () => router.push("/data-science"),
+  },
+  {
+    id: "10",
+    title: "Finance",
+    icon: <MaterialIcons name="attach-money" size={28} color="#2c3e50" />,
+    onPress: () => router.push("/finance"),
   },
 ];
 
 const HorizontalOptions = () => {
   return (
     <View style={styles.container}>
-      {/* Categories Heading */}
       <Text style={styles.heading}>Categories</Text>
-      
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {options.map((item) => (
           <TouchableOpacity
@@ -65,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 20,
     paddingLeft: 10,
+    width:400
   },
   heading: {
     fontSize: 20,
@@ -75,8 +116,8 @@ const styles = StyleSheet.create({
   card: {
     width: 120,
     height: 100,
-    backgroundColor: "#d3d3d3",
-    borderRadius: 10,
+    backgroundColor: "#5DADE2", // Darker sky blue
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 15,
@@ -92,6 +133,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: "600",
-    color: "black",
+    color: "#fff", // White text
+    textAlign: "center",
   },
 });

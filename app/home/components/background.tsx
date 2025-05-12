@@ -26,7 +26,9 @@ export const Background = () => {
               style={styles.profilePic}
             />
             <Text style={styles.text}>Welcome {user?.name}!</Text>
-            <Text style={styles.subtext}>How is it going with Your Career?</Text>
+            <Text style={styles.subtext}>How's your career journey going with us?
+
+</Text>
 
             {/* Search Input Below Text */}
             <TextInput
@@ -46,7 +48,7 @@ export const Background = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#6CA6CD", // Darker sky blue
   },
   cartIcon: {
     position: "absolute",
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 5,
     paddingVertical: 5,
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#6CA6CD",
   },
   content: {
     flex: 1,
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginBottom: 20,
-    backgroundColor: "#ADD8E6",
+    backgroundColor: "#6CA6CD",
     marginLeft: 30,
     alignItems: "center",
   },
@@ -85,8 +87,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   subtext: {
-    color: "gray",
-    fontSize: 15,
+    color: "#FFFF",
+    fontSize: 18,
     textAlign: "center",
   },
   searchInput: {

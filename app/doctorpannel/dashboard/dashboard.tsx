@@ -1,4 +1,3 @@
-// app/dashboard/DoctorDashboardScreen.tsx
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -6,117 +5,334 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
+  Animated,
+  Dimensions
 } from "react-native";
+import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-const DoctorDashboardScreen = () => {
+const { width } = Dimensions.get('window');
+
+// Data
+const statsData = [
+  {
+    title: "Students",
+    value: "42",
+    icon: "users",
+    color: "#6366F1", // Indigo
+    trend: "+5%",
+    action: () => router.push('/students')
+  },
+  {
+    title: "Live Classes",
+    value: "3",
+    icon: "video",
+    color: "#EC4899", // Pink
+    trend: "2 ongoing"
+  },
+  {
+    title: "Courses",
+    value: "8",
+    icon: "book-open",
+    color: "#10B981", // Emerald
+    trend: "↑ 2 new"
+  },
+  {
+    title: "Earnings",
+    value: "₹12.3K",
+    icon: "rupee-sign",
+    color: "#F59E0B", // Amber
+    trend: "↑ 15%"
+  }
+];
+
+const upcomingClasses = [
+  {
+    title: "Advanced React",
+    time: "10:00 AM",
+    date: "Today",
+    students: 15
+  },
+  {
+    title: "UI/UX Design",
+    time: "2:00 PM",
+    date: "Tomorrow",
+    students: 12
+  }
+];
+
+const TeacherDashboard = () => {
+  const scrollX = new Animated.Value(0);
+
+  const renderStats = () => (
+    <View style={styles.statsContainer}>
+      {statsData.map((item, index) => (
+        <TouchableOpacity 
+          key={index} 
+          style={[styles.statCard, { backgroundColor: item.color }]}
+          activeOpacity={0.9}
+          onPress={item.action}
+        >
+          <View style={styles.statIcon}>
+            <FontAwesome5 name={item.icon} size={20} color="#fff" />
+          </View>
+          <Text style={styles.statValue}>{item.value}</Text>
+          <Text style={styles.statTitle}>{item.title}</Text>
+          <Text style={styles.statTrend}>{item.trend}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const renderUpcomingClasses = () => (
+    <View style={styles.section}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Upcoming Classes</Text>
+        <TouchableOpacity>
+          <Text style={styles.seeAll}>See All</Text>
+        </TouchableOpacity>
+      </View>
+      
+      {upcomingClasses.map((item, index) => (
+        <TouchableOpacity key={index} style={styles.classCard}>
+          <View style={styles.classInfo}>
+            <Text style={styles.classTitle}>{item.title}</Text>
+            <View style={styles.classMeta}>
+              <Ionicons name="time-outline" size={14} color="#64748B" />
+              <Text style={styles.classText}>{item.date}, {item.time}</Text>
+            </View>
+            <View style={styles.classMeta}>
+              <Ionicons name="people-outline" size={14} color="#64748B" />
+              <Text style={styles.classText}>{item.students} students</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.startButton}>
+            <MaterialCommunityIcons name="arrow-right" size={20} color="#fff" />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heading}>Doctor Dashboard</Text> 
-      <TouchableHighlight
-        underlayColor={"white"}
-        style={{
-          width: "100%",
-        }}
-        onPress={() => {
-          router.navigate("/doctorpannel/appointment");
-        }}
-      >
-        <View style={styles.card}>
-          <Image
-            source={{
-              uri: "https://media.istockphoto.com/id/1319031310/photo/doctor-writing-a-medical-prescription.jpg?s=612x612&w=0&k=20&c=DWZGM8lBb5Bun7cbxhKT1ruVxRC_itvFzA9jxgoA0N8="  
-            }}
-   
-            style={styles.appointmentImage}
-          ></Image>
-          <Text style={styles.cardTitle}>Total Appointments </Text>
-          <Text style={styles.cardValue}>42</Text>
+    <ScrollView 
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Header */}
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.greeting}>Hello, Teacher!</Text>
+          <Text style={styles.subtitle}>Here's your dashboard</Text>
         </View>
-      </TouchableHighlight>
-
-      <View style={styles.card}>
-      <Image
-            source={{
-              uri: "https://plus.unsplash.com/premium_photo-1661769167673-cfdb37f156d8?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-            }}
-   
-            style={styles.appointmentImage}
-          ></Image>
-        <Text style={styles.cardTitle}>Today’s Appointments</Text>
-        <Text style={styles.cardValue}>5</Text>
+        <TouchableOpacity style={styles.notificationBtn}>
+          <Ionicons name="notifications-outline" size={24} color="#334155" />
+          <View style={styles.notificationBadge} />
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.card}>
-      <Image
-            source={{
-              uri: "https://plus.unsplash.com/premium_photo-1661496148632-514dd2197691?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-            }}
-   
-            style={styles.appointmentImage}
-          ></Image>
-        <Text style={styles.cardTitle}>Pending Approvals</Text>
-        <Text style={styles.cardValue}>2</Text>
-      </View>
+      {/* Stats Cards */}
+      {renderStats()}
 
-      <View style={styles.card}>
-      <Image
-            source={{
-              uri: "https://plus.unsplash.com/premium_photo-1667520030781-ea2cf0bcb509?q=80&w=2962&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  
-            }}
-   
-            style={styles.appointmentImage}
-          ></Image>
-        <Text style={styles.cardTitle}>Patients Consulted</Text>
-        <Text style={styles.cardValue}>18</Text>
-      </View> 
-      </ScrollView>
+      {/* Upcoming Classes */}
+      {renderUpcomingClasses()}
+
+      {/* Quick Actions */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity style={styles.actionCard}>
+            <View style={[styles.actionIcon, { backgroundColor: '#E0F2FE' }]}>
+              <FontAwesome5 name="plus" size={18} color="#0369A1" />
+            </View>
+            <Text style={styles.actionText}>New Class</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionCard}>
+            <View style={[styles.actionIcon, { backgroundColor: '#ECFDF5' }]}>
+              <FontAwesome5 name="edit" size={18} color="#10B981" />
+            </View>
+            <Text style={styles.actionText}>Create Content</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionCard}>
+            <View style={[styles.actionIcon, { backgroundColor: '#FEF2F2' }]}>
+              <Ionicons name="analytics-outline" size={18} color="#EF4444" />
+            </View>
+            <Text style={styles.actionText}>Analytics</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, padding: 20 
-   
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+    padding: 20,
   },
-  heading: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  greeting: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
-  card: {
-  width: "100%",
-    backgroundColor: "#ffffff",
-    padding: 30,
+  subtitle: {
+    fontSize: 14,
+    color: '#64748B',
+    marginTop: 4,
+  },
+  notificationBtn: {
+    position: 'relative',
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#EF4444',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 25,
+  },
+  statCard: {
+    width: width * 0.43,
     borderRadius: 16,
+    padding: 20,
     marginBottom: 15,
-    shadowColor: "#000",
+    elevation: 2,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 4,
-  
-    
+    shadowRadius: 4,
   },
-  cardTitle: {
-    fontSize: 20,
-    color: "black",
-    marginTop: 10,
-    fontWeight: "bold", // Add this line for bold tex
-   
+  statIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
   },
-  cardValue: {
+  statValue: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#28a745",
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 4,
   },
-  appointmentImage: {
-  
-    height: 150,
-   width:300,
-    marginRight: 15,
+  statTitle: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: 4,
+  },
+  statTrend: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.8)',
+  },
+  section: {
+    marginBottom: 25,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#0F172A',
+  },
+  seeAll: {
+    fontSize: 14,
+    color: '#6366F1',
+    fontWeight: '500',
+  },
+  classCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  classInfo: {
+    flex: 1,
+  },
+  classTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#0F172A',
+    marginBottom: 8,
+  },
+  classMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  classText: {
+    fontSize: 13,
+    color: '#64748B',
+    marginLeft: 6,
+  },
+  startButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#6366F1',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionCard: {
+    width: width * 0.28,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  actionIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  actionText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#334155',
+    textAlign: 'center',
   },
 });
 
-export default DoctorDashboardScreen;
+export default TeacherDashboard;

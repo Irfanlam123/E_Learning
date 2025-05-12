@@ -19,7 +19,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="patient"
         options={{
-          title: "Patients",
+          title: "Students",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people" size={28} color="black" />
           ),
@@ -28,7 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prescription"
         options={{
-          title: "Prescriptions",
+          title: "Course",
           tabBarIcon: ({ color }) => (
             <Octicons name="feed-person" size={28} color="black" />
           ),

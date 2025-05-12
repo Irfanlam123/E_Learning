@@ -8,6 +8,7 @@ import {
 import { Background } from "./components/background";
 import HealthArticles from "./components/articles";
 import HorizontalOptions from "./components/horizontaloptions";
+import CourseList from "./components/CoursesList";
 
 const HomeScreen = () => {
   return (
@@ -23,8 +24,16 @@ const HomeScreen = () => {
             <View style={styles.section}>
               <HorizontalOptions />
             </View>
+
+            
             <View style={styles.section}>
+              <CourseList />
             </View>
+
+
+            
+       
+          
 
             <View style={styles.section}>
               <HealthArticles />

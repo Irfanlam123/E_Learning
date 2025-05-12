@@ -28,19 +28,21 @@ const HealthArticles: React.FC = () => {
     loading,
     error,
   } = useAppSelector((state) => state.article);
+
   const [refreshing, setRefreshing] = useState(false);
 
-  // Transform API data to match component's expected format
-  const transformedArticles: Article[] = apiArticles.map((article) => ({
-    id: article.ID.toString(),
-    title: article.title,
-    description: article.desc,
-    imageUrl: article.image || "https://via.placeholder.com/150",
-    pinned: article.pin === true || false,
-  }));
+  // Transform and sort: pinned articles first
+  const transformedArticles: Article[] = apiArticles
+    .map((article) => ({
+      id: article.ID.toString(),
+      title: article.title,
+      description: article.desc,
+      imageUrl: article.image || "https://via.placeholder.com/150",
+      pinned: article.pin === true,
+    }))
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
 
   const togglePin = (id: string) => {
-    console.log("Toggling pin for article:", id);
     dispatch(togglePinArticle(id));
   };
 
@@ -58,7 +60,7 @@ const HealthArticles: React.FC = () => {
   if (loading && !refreshing) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#4a90e2" />
       </View>
     );
   }
@@ -76,20 +78,18 @@ const HealthArticles: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Latest Articles</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAll}>See All</Text>
+        <TouchableOpacity onPress={handleRefresh}>
+          <Text style={styles.seeAll}>Refresh</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Articles List */}
       <FlatList
         data={transformedArticles}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <View style={[styles.card, item.pinned && styles.pinnedCard]}>
             <Image source={{ uri: item.imageUrl }} style={styles.image} />
             <View style={styles.content}>
               <Text style={styles.articleTitle}>{item.title}</Text>
@@ -97,15 +97,15 @@ const HealthArticles: React.FC = () => {
             </View>
             <TouchableOpacity onPress={() => togglePin(item.id)}>
               <Feather
-                name="bookmark"
+                name={item.pinned ? "bookmark" : "bookmark"}
                 size={22}
-                color={item.pinned ? "blue" : "red"}
+                color={item.pinned ? "#007BFF" : "#ccc"}
               />
             </TouchableOpacity>
           </View>
         )}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 30 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#F4F8FB",
   },
   header: {
     marginTop: 20,
@@ -133,31 +133,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#333",
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#222",
   },
   seeAll: {
     fontSize: 14,
-    color: "#4a90e2",
+    color: "#007BFF",
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 12,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 14,
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  pinnedCard: {
+    backgroundColor: "#E9F5FF",
   },
   image: {
     width: 60,
     height: 60,
-    borderRadius: 8,
-    marginRight: 10,
+    borderRadius: 10,
+    marginRight: 12,
   },
   content: {
     flex: 1,
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 13,
     color: "#666",
-    marginTop: 2,
+    marginTop: 4,
   },
   center: {
     flex: 1,

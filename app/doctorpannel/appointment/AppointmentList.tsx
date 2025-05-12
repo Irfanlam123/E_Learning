@@ -14,7 +14,6 @@ const dummyAppointments = [
     patientName: "Ankit Sharma",
     time: "10:30 AM",
     date: "12 Apr 2025",
-    reason: "Fever and cold",
     status: "Pending",
   },
   {
@@ -22,7 +21,6 @@ const dummyAppointments = [
     patientName: "Riya Mehta",
     time: "12:00 PM",
     date: "12 Apr 2025",
-    reason: "Back pain",
     status: "Pending",
   },
   {
@@ -30,7 +28,6 @@ const dummyAppointments = [
     patientName: "Aman Verma",
     time: "2:00 PM",
     date: "13 Apr 2025",
-    reason: "Headache",
     status: "Approved",
   },
 ];
@@ -57,7 +54,7 @@ const DoctorAppointmentsScreen = () => {
       <Text style={styles.info}>
         🕒 {item.time} | 📅 {item.date}
       </Text>
-      <Text style={styles.reason}>Reason: {item.reason}</Text>
+      
 
       {item.status === "Pending" && (
         <View style={styles.buttonRow}>
@@ -80,7 +77,7 @@ const DoctorAppointmentsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Appointments</Text>
+      <Text style={styles.heading}>Students</Text>
       <FlatList
         data={appointments}
         keyExtractor={(item) => item.id}

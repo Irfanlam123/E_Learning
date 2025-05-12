@@ -24,7 +24,7 @@ const OnBoardingsScreen3 = () => {
   };
 
   const handleSkip = () => {
-    router.replace("/home"); // Replace with actual route
+    router.replace("/(tabs)"); // Replace with actual route
   };
 
   return (
