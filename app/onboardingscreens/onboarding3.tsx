@@ -23,45 +23,45 @@ const OnBoardingsScreen3 = () => {
     }
   };
 
-  const handleSkip = () => {
-    router.replace("/(tabs)"); // Replace with actual route
-  };
-
   return (
     <View style={styles.container}>
-      {/* Skip Button */}
-      <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-        <Text style={styles.skipText}>Skip</Text>
-      </TouchableOpacity>
-
-      {/* Card-style image */}
-      <View style={styles.imageCard}>
+      {/* Image with decorative border */}
+      <View style={styles.imageContainer}>
         <Image
           source={require("../../assets/images/onboard2.jpg")}
           style={styles.image}
         />
+        <View style={styles.imageBorder} />
       </View>
 
       {/* Content */}
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Let’s get started!</Text>
-        <Text style={styles.subtitle}>Login to stay connected with US!</Text>
+        <Text style={styles.title}>Let's Get Started!</Text>
+        <Text style={styles.subtitle}>
+          Login to your account or sign up to begin your journey with us
+        </Text>
 
-        {/* Dots */}
+        {/* Progress indicators */}
         <View style={styles.dotsContainer}>
           <View style={styles.inactiveDot} />
           <View style={styles.inactiveDot} />
           <View style={styles.activeDot} />
         </View>
 
-        {/* Login & Signup Buttons */}
-        <View style={styles.buttonRow}>
-          <View style={styles.buttonWrapper}>
-            <Mybutton title="Login" onPress={() => handleClick("Login")} />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Mybutton title="Signup" onPress={() => handleClick("signup")} />
-          </View>
+        {/* Action buttons */}
+        <View style={styles.buttonContainer}>
+          <Mybutton 
+            title="Login" 
+            onPress={() => handleClick("Login")} 
+            style={styles.loginButton}
+            textStyle={styles.loginButtonText}
+          />
+          <Mybutton 
+            title="Sign Up" 
+            onPress={() => handleClick("signup")} 
+            style={styles.signupButton}
+            textStyle={styles.signupButtonText}
+          />
         </View>
       </View>
     </View>
@@ -73,73 +73,57 @@ export default OnBoardingsScreen3;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4f6fa",
+    backgroundColor: "#ffffff",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 40,
   },
-  skipButton: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-    backgroundColor: "#FFFF",
-    paddingVertical: 8,
-    paddingHorizontal: 18,
-    borderRadius: 25,
-    zIndex: 10,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  skipText: {
-    color: "black",
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  imageCard: {
-    width: width * 0.9,
-    height: width * 1,
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    overflow: "hidden",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    marginTop: 60, // 👈 Space between Skip button and image
+  imageContainer: {
+    width: width * 0.8,
+    height: width * 0.8,
+    borderRadius: width * 0.4,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 30,
+    position: "relative",
   },
   image: {
+    width: "90%",
+    height: "90%",
+    borderRadius: width * 0.45,
+    resizeMode: "cover",
+  },
+  imageBorder: {
+    position: "absolute",
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    borderRadius: width * 0.4,
+    borderWidth: 8,
+    borderColor: "rgba(0, 123, 255, 0.1)",
   },
   contentContainer: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
-    justifyContent: "flex-start",
-    paddingHorizontal: 20,
-    marginTop: 30,
+    paddingHorizontal: 30,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#1e1e1e",
-    marginBottom: 12,
+    fontSize: 32,
+    fontWeight: "800",
+    color: "#2d3436",
+    marginBottom: 16,
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: "#555",
+    color: "#636e72",
     textAlign: "center",
-    marginBottom: 24,
+    marginBottom: 32,
     lineHeight: 24,
-    maxWidth: 280,
+    paddingHorizontal: 20,
   },
   dotsContainer: {
     flexDirection: "row",
-    marginBottom: 28,
+    marginBottom: 40,
   },
   activeDot: {
     width: 12,
@@ -149,20 +133,42 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   inactiveDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: "#ccc",
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#dfe6e9",
     marginHorizontal: 6,
   },
-  buttonRow: {
+  buttonContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
-  buttonWrapper: {
+  loginButton: {
     flex: 1,
-    marginHorizontal: 6,
+    marginRight: 10,
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#007bff",
+    borderRadius: 12,
+    paddingVertical: 14,
+  },
+  loginButtonText: {
+    color: "#007bff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  signupButton: {
+    flex: 1,
+    marginLeft: 10,
+    backgroundColor: "#007bff",
+    borderRadius: 12,
+    paddingVertical: 14,
+  },
+  signupButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });

@@ -5,7 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: "blue", headerShown: false }}>
       <Tabs.Screen
         name="index"
         options={{
@@ -17,29 +17,38 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="teachers"
-        options={{
-          title: "Teachers",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="person-add" size={26} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="students"
+        name="patient"
         options={{
           title: "Students",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="person-add-outline" size={26} color={color} />
+            <Ionicons name="people" size={28} color="black" />
           ),
         }}
       />
       <Tabs.Screen
-        name="courses"
+        name="prescription"
         options={{
-          title: "Courses",
+          title: "Course",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="bookmark" size={26} color={color} />
+            <Octicons name="feed-person" size={28} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="schedule"
+        options={{
+          title: "Schedules",
+          tabBarIcon: ({ color }) => (
+            <Octicons name="clock" size={28} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="file-picture-o" color="black" />
           ),
         }}
       />

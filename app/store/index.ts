@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import patientReducer from "../../app/doctorpannel/patient/patientSlice";
 import articleReducer from "../home/homeSlice";
 import authReducer from "../auth/authSlice";
-import PrescriptionReducer from "../doctorpannel/prescription/prescriptionSlice";
+import PrescriptionReducer from "../teacherpannel/prescription/prescriptionSlice";
 
 export const store = configureStore({
   reducer: {

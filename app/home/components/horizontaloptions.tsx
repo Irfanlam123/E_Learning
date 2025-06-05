@@ -5,93 +5,61 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
+  Platform,
 } from "react-native";
-import {
-  FontAwesome5,
-  MaterialIcons,
-  Ionicons,
-  Feather,
-  AntDesign,
-  Entypo,
-} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+
+const screenWidth = Dimensions.get("window").width;
+const CARD_WIDTH = Math.min(screenWidth / 4.2, 100); // Smaller width
+const CARD_HEIGHT = CARD_WIDTH * 1.05; // Reduced height
 
 const options = [
   {
     id: "1",
-    title: "Art",
-    icon: <FontAwesome5 name="paint-brush" size={28} color="#f39c12" />,
-    onPress: () => router.push("/art"),
-  },
-  {
-    id: "2",
     title: "Coding",
-    icon: <MaterialIcons name="code" size={28} color="#3498db" />,
+    icon: <MaterialIcons name="code" size={18} color="#3498db" />,
     onPress: () => router.push("/coding"),
   },
   {
-    id: "3",
-    title: "Marketing",
-    icon: <Ionicons name="md-business" size={28} color="#e74c3c" />,
-    onPress: () => router.push("/marketing"),
-  },
-  {
-    id: "4",
-    title: "Business",
-    icon: <FontAwesome5 name="briefcase" size={28} color="#2ecc71" />,
-    onPress: () => router.push("/business"),
-  },
-  {
-    id: "5",
-    title: "UI/UX",
-    icon: <Feather name="layout" size={28} color="#9b59b6" />,
-    onPress: () => router.push("/uiux"),
-  },
-  {
-    id: "6",
-    title: "Figma Design",
-    icon: <AntDesign name="antdesign" size={28} color="#e67e22" />,
-    onPress: () => router.push("/figma"),
-  },
-  {
-    id: "7",
-    title: "Video Editing",
-    icon: <MaterialIcons name="video-library" size={28} color="#1abc9c" />,
+    id: "2",
+    title: "Editing",
+    icon: <MaterialIcons name="video-library" size={18} color="#1abc9c" />,
     onPress: () => router.push("/video-editing"),
   },
   {
-    id: "8",
-    title: "Photography",
-    icon: <Entypo name="camera" size={28} color="#e84393" />,
-    onPress: () => router.push("/photography"),
-  },
-  {
-    id: "9",
-    title: "Data Science",
-    icon: <FontAwesome5 name="database" size={28} color="#2980b9" />,
-    onPress: () => router.push("/data-science"),
-  },
-  {
-    id: "10",
+    id: "3",
     title: "Finance",
-    icon: <MaterialIcons name="attach-money" size={28} color="#2c3e50" />,
+    icon: <MaterialIcons name="attach-money" size={18} color="#2c3e50" />,
     onPress: () => router.push("/finance"),
   },
+ 
 ];
 
 const HorizontalOptions = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Categories</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <Text style={styles.heading}>Explore Categories</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        decelerationRate="fast"
+        snapToInterval={CARD_WIDTH + 10}
+        snapToAlignment="start"
+      >
         {options.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.card}
             onPress={item.onPress}
+            activeOpacity={0.7}
           >
             <View style={styles.iconContainer}>{item.icon}</View>
-            <Text style={styles.text}>{item.title}</Text>
+            <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+              {item.title}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -103,37 +71,52 @@ export default HorizontalOptions;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
-    paddingLeft: 10,
-    width:400
+    marginTop: 14,
+    paddingHorizontal: 14,
+    marginBottom: 24, // ✅ Added bottom space here
   },
   heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#2c3e50",
     marginBottom: 10,
+    fontFamily: Platform.OS === "ios" ? "System" : "Roboto",
+  },
+  scrollContent: {
+    paddingRight: 14,
   },
   card: {
-    width: 120,
-    height: 100,
-    backgroundColor: "#5DADE2", // Darker sky blue
-    borderRadius: 12,
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    backgroundColor: "#fff",
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 15,
+    marginRight: 10,
+    padding: 8,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
+    borderWidth: 0.5,
+    borderColor: "#eee",
   },
   iconContainer: {
-    marginBottom: 8,
+    marginBottom: 6,
+    backgroundColor: "#f0f3f5",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#fff", // White text
+    fontSize: 11,
+    fontWeight: "500",
+    color: "#34495e",
     textAlign: "center",
+    marginTop: 4,
+    width: "90%",
   },
 });

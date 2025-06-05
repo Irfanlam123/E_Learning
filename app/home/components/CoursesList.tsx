@@ -1,138 +1,203 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import axios from "axios";
+import React, { useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Platform,
+  ActivityIndicator,
+  Dimensions,
+} from "react-native";
+import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchCourses } from "../homeSlice";
 
-type Course = {
-  id: number;
+const { width, height } = Dimensions.get("window");
+
+export type Course = {
+  ID: number;
   name: string;
   description: string;
   price: number;
   image: string;
+  about: string;
+  lession: string;
+  categories?: string[];
 };
+
+const CARD_HEIGHT = width * 0.3 + 24;
 
 const CourseList = () => {
-  const [courses, setCourses] = useState<Course[]>([]);
+  const dispatch = useAppDispatch();
+  const { courses, loading, error } = useAppSelector((state) => state.article);
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/courses");
-        const courseData = response.data.map((course: any) => ({
-          ...course,
-          id: course.id || Math.random(), // Random ID fallback if id is missing
-        }));
-        setCourses(courseData);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
-      }
-    };
+  React.useEffect(() => {
+    dispatch(fetchCourses());
+  }, [dispatch]);
 
-    fetchCourses();
-  }, []);
-
-  const renderItem = ({ item }: { item: Course }) => (
-    <View style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.image} />
+  const renderItem = useCallback(({ item }: { item: Course }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => router.push(`/coursedetails/${item.ID}`)}
+      activeOpacity={0.9}
+    >
+      <Image
+        source={{ uri: item.image }}
+        style={styles.image}
+        resizeMode="cover"
+      />
       <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+        <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
         <View style={styles.priceAndButton}>
-          <Text style={styles.price}>₹{item.price}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => console.log(`View details of ${item.name}`)}
-          >
-            <Text style={styles.buttonText}>View Details</Text>
-          </TouchableOpacity>
+          <Text style={styles.price}>₹{item.price.toLocaleString()}</Text>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>View</Text>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    </TouchableOpacity>
+  ), []);
+
+  const keyExtractor = useCallback((item: Course) => item.ID.toString(), []);
+
+  const getItemLayout = useCallback((_, index) => ({
+    length: CARD_HEIGHT,
+    offset: CARD_HEIGHT * index,
+    index,
+  }), []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>📘 Popular Courses</Text>
-      <FlatList
-        data={courses}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={styles.header}>📘 Popular Courses</Text>
+
+        {loading ? (
+          <ActivityIndicator size="large" color="#f39c12" style={styles.loader} />
+        ) : error ? (
+          <Text style={styles.errorText}>{error}</Text>
+        ) : (
+          <FlatList
+            data={courses}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            getItemLayout={getItemLayout}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>No courses available</Text>
+            }
+            initialNumToRender={6}
+            maxToRenderPerBatch={6}
+            windowSize={10}
+            removeClippedSubviews={false}
+          />
+        )}
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 
-export default CourseList;
+export default React.memo(CourseList);
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: "#f2f4f7",
-    padding: 20,
+    backgroundColor: "#f8f9fa",
+    paddingHorizontal: width * 0.04,
   },
   header: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: width * 0.055,
+    fontWeight: "700",
     color: "#2c3e50",
-    marginBottom: 15,
+    marginBottom: 16,
+    marginTop: Platform.OS === "android" ? 10 : 0,
+    paddingHorizontal: 4,
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    padding: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    padding: width * 0.03,
     flexDirection: "row",
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
-    alignItems: "flex-start", // Align image and info at the start
+    marginBottom: 12,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 12,
-    marginRight: 15,
-    backgroundColor: "#ddd",
+    width: width * 0.28,
+    height: width * 0.28,
+    borderRadius: 8,
+    marginRight: width * 0.03,
+    backgroundColor: "#f0f0f0",
   },
   info: {
     flex: 1,
+    justifyContent: "space-between",
   },
   name: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#34495e",
-    marginBottom: 5,
+    fontSize: width * 0.043,
+    fontWeight: "600",
+    color: "#2d3436",
+    marginBottom: 4,
+    lineHeight: width * 0.052,
   },
   description: {
-    fontSize: 14,
-    color: "#7f8c8d",
-    marginVertical: 4,
+    fontSize: width * 0.035,
+    color: "#636e72",
+    lineHeight: width * 0.048,
+    marginBottom: 8,
   },
   priceAndButton: {
-    flexDirection: "row", // Align price and button horizontally
-    justifyContent: "space-between", // Space them out evenly
-    alignItems: "center",
-    marginTop: 10,
-  },
+  flexDirection: "row",
+  alignItems: "center",
+},
+
   price: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#27ae60",
+    fontSize: width * 0.045,
+    fontWeight: "500",
+    color: "#2ecc71",
   },
   button: {
-    backgroundColor: "#f1c40f", // Light yellow color
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#f39c12",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8, 
+    marginLeft:6,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: width * 0.032,
+    fontWeight: "500",
+  },
+  listContent: {
+    paddingBottom: height * 0.05,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    color: "#e74c3c",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "#7f8c8d",
+    marginTop: 20,
   },
 });

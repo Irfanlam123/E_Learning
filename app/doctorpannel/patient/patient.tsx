@@ -25,7 +25,7 @@ const PatientDetailsScreen = () => {
   const dispatch = useAppDispatch();
   const { patients, loading, error } = useAppSelector((state) => state.patient);
   const [refreshing, setRefreshing] = useState(false);
-
+console.log("fetch students",patients);
   useEffect(() => {
     dispatch(fetchPatients());
   }, [dispatch]);

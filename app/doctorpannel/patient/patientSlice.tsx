@@ -31,7 +31,7 @@ export const fetchPatients = createAsyncThunk(
   "patients/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${URI}/patients`);
+      const response = await axios.get(`${URI}/students`);
       return response.data;
     } catch (error) {
       return rejectWithValue(

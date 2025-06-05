@@ -1,28 +1,31 @@
 import React, { useState } from "react";
-import { View, Text, Image, TextInput, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Alert,
+  StyleSheet,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useRouter } from "expo-router";
 import Mybutton from "@/components/mybutton";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store";
 import { loginUser } from "./authSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-
 
 const Login = () => {
   const [value, setValue] = useState({ email: "", password: "" });
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  
-  // Getting loading and error states from Redux
-  const { loading, error, user } = useAppSelector((state: RootState) => state.auth);
+  const { loading, error } = useAppSelector((state: RootState) => state.auth);
 
-  // Handle input changes
   const handleInputChange = (field: string, text: string) => {
     setValue((prev) => ({ ...prev, [field]: text }));
   };
 
-  // Handle Login Button
   const handleLogin = async () => {
     const { email, password } = value;
 
@@ -32,19 +35,13 @@ const Login = () => {
     }
 
     try {
-      // ➡️ Dispatching the login API call
       const response = await dispatch(loginUser({ email, password })).unwrap();
-      console.log("reponse lgin api me",response); // Logging the response for debugging
-      
-// router.navigate("/(tabs)");
-//       // Handle the response from the API call
-//       // You can navigate to different screens based on the response
-//       // For example, if the response is successful, navigate to the home screen
-//       // Redirect based on user role
-      if (response.role ==="student"||response.role==="") {
+      console.log("response login API:", response);
+
+      if (response.role === "student" || response.role === "") {
         router.navigate("/(tabs)");
       } else if (response.role === "teacher") {
-        router.push("/doctorpannel");
+        router.push("/teacherpannel");
       } else if (response.role === "admin") {
         router.push("/admin");
       }
@@ -54,67 +51,83 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("@/assets/images/login.jpg")}
-        style={styles.image}
-      />
+    <ImageBackground
+      source={{
+        uri: "https://plus.unsplash.com/premium_photo-1685214580428-7eae1a78e7bc?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      }}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <KeyboardAvoidingView
+        style={styles.overlay}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Login</Text>
 
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Login</Text>
+          <TextInput
+            placeholder="Enter Your Email"
+            placeholderTextColor="#ccc"
+            style={styles.textInput}
+            value={value.email}
+            onChangeText={(text) => handleInputChange("email", text)}
+          />
 
-        <TextInput
-          placeholder="Enter Your Email"
-          style={styles.textInput}
-          value={value.email}
-          onChangeText={(text) => handleInputChange("email", text)}
-        />
+          <TextInput
+            placeholder="Enter Your Password"
+            placeholderTextColor="#ccc"
+            style={styles.textInput}
+            value={value.password}
+            secureTextEntry
+            onChangeText={(text) => handleInputChange("password", text)}
+          />
 
-        <TextInput
-          placeholder="Enter Your Password"
-          style={styles.textInput}
-          value={value.password}
-          secureTextEntry
-          onChangeText={(text) => handleInputChange("password", text)}
-        />
-
-        <Mybutton title={loading ? "Logging in..." : "Login"} onPress={handleLogin} />
-        {error && <Text style={styles.errorText}>{error}</Text>}
-      </View>
-    </View>
+          <Mybutton title={loading ? "Logging in..." : "Login"} onPress={handleLogin} />
+          {error && <Text style={styles.errorText}>{error}</Text>}
+        </View>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "center",
   },
-  image: {
-    width: "100%",
-    height: 250,
-    resizeMode: "cover",
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)", // Dark overlay for contrast
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
   formContainer: {
-    paddingHorizontal: 20,
-    marginTop: 20,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.9)", // semi-transparent white
+    padding: 20,
+    borderRadius: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: "center",
+    color: "#333",
   },
   textInput: {
     padding: 12,
     marginVertical: 10,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     borderRadius: 5,
-    borderColor: "gray",
+    borderColor: "#ccc",
     borderWidth: 1,
+    color: "#000",
   },
   errorText: {
     color: "red",
     marginTop: 10,
+    textAlign: "center",
   },
 });
 
